@@ -8,6 +8,13 @@
 ### Hardware
 - [M5StackCore2](https://github.com/m5stack/M5Core2)
 
+#### Hardware model: todo
+0. ESP32 Dev (M5 Stack Core)
+1. 9DOF sensor
+2. TOF sensor
+3. M5POE
+4. M5Plus
+
 ### Software
 - [ESP32-Arduino](https://github.com/espressif/arduino-esp32)
 - [LVGL](https://github.com/lvgl/lvgl)
@@ -20,14 +27,6 @@
 3. getting 6DOF sensor data and TOF sensor data
 4. OSC input and output
 
-
-## Hardware model: todo
-0. ESP32 Dev (M5 Stack Core)
-1. 9DOF sensor
-2. TOF sensor
-3. M5POE
-4. M5Plus
-
 ### Function: todo
 1. Get the camera metadata and sending to the PC by OSC
 2. Get the lens metadata and sending to the PC by OSC
@@ -36,7 +35,6 @@
 5. Set up the camera and lens by OSC
 6. Set up the camera timecode by NTP
 7. Auto focus by TOF sensor
-
 
 ## UI Layout Plan
 
@@ -75,7 +73,6 @@ Touch Icon -> waiting -> Select your WiFi -> keyboard
 - Focal Length of the Lens
 
 ## How to USE 
-
 1. copy the lv_conf.h from the src folder into the .pio/libdeps/lvgl folder (you have to do this since the lvgl library is pulled from github)
 2. edit the .pio/libdeps/lvgl/src/misc/lv_conf_internal.h and change the line like so:
 ```c
@@ -85,7 +82,7 @@ Touch Icon -> waiting -> Select your WiFi -> keyboard
         #include "lv_conf.h"                //(prior to that this line had "../../lv_conf.h" remove the ../../)//
     #endif
 ```
-taken from:[m5core2-lvgl8-SquarelineStudio-PlatformIO](https://github.com/OzInFl/m5core2-lvgl8-SquarelineStudio-PlatformIO)
+> taken from:[m5core2-lvgl8-SquarelineStudio-PlatformIO](https://github.com/OzInFl/m5core2-lvgl8-SquarelineStudio-PlatformIO)
 
 # Acknowledgments
 - [BlueMagic32](https://github.com/schoolpost/BlueMagic32) 
