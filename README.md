@@ -1,22 +1,21 @@
 # BMD Camera XR Adapter Plan
 
-## Hardware
-M5Stack Core2
-    - ESP32
-    - TFT 320*240
-    - MPU6886
+## Development Environment
+- IDE[VSCode](https://github.com/microsoft/vscode)
+- IoT IDE[PlatformIO](https://github.com/platformio/platformio-vscode-ide)
+- [Arduino](https://github.com/arduino/Arduino)
 
-## Software
-    - Arduino
-    - freeRTOS
+### Hardware
+- [M5StackCore2](https://github.com/m5stack/M5Core2)
 
-## Tasks
-    - task1 for UI (LVGL)
-    - task2 for WiFi and BLE
+### Software
+- [ESP32-Arduino](https://github.com/espressif/arduino-esp32)
+- [LVGL](https://github.com/lvgl/lvgl)
+- [SquareLine Studio](https://docs.squareline.io/docs/squareline/)
 
-## UI Layout
+## UI Layout Plan
 
-### init
+### init page
 
 #### Scanning Camera
 Scan Button -> one of results connecting -> Input PinCode -> OK
@@ -38,7 +37,7 @@ Touch Icon -> waiting -> Select your WiFi -> keyboard
 
 #### Done
 
-### Summary
+### Summary page
 - BMD Camera XR Adapter 
 - WiFi & BLE RSSI 
 - Device Name Or Model Name
