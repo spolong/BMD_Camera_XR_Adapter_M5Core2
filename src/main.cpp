@@ -8,9 +8,6 @@
 
 
 
-#define LV_HOR_RES_MAX  320
-#define LV_VER_RES_MAX  240
-
 // init the tft espi
 static lv_disp_draw_buf_t draw_buf;
 static lv_disp_drv_t disp_drv;  // Descriptor of a display driver
