@@ -1,5 +1,22 @@
 # BMD Camera XR Adapter Plan
 
+## Dev log
+
+### WiFi model:
+1. test smartconfig -- wechat cloud not work , ESP-Touch only.
+2. add airkey , but cloud not work. ( esp_smartconfig_set_type(SC_TYPE_ESPTOUCH_AIRKISS); )
+3. auto reconnect WiFi, When WiFi.status() is True.
+4. need a button for start smartconfig
+5. auto reconnect WiFi, When WiFi disconnected.
+
+### BLE model:
+1. review old library -- bleconnect
+2. BLE Client with PIN Code
+
+### Input and Output model:
+1. LVGL test
+2. UI for WiFi and BLE Test
+
 ## Development Environment
 - IDE[VSCode](https://github.com/microsoft/vscode)
 - IoT IDE[PlatformIO](https://github.com/platformio/platformio-vscode-ide)
