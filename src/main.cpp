@@ -18,11 +18,6 @@ static lv_indev_drv_t indev_drv; // Descriptor of a touch driver
 
 M5Display *tft;
 
-static void btnPowerOff_event(lv_event_t * event)
-{
-    M5.Axp.PowerOff();
-}
-
 void tft_lv_initialization() {
   M5.begin(true,true,true,true);
 
