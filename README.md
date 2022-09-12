@@ -89,3 +89,9 @@ taken from:
 https://forum.m5stack.com/topic/3613/how-to-run-lvgl-on-m5stack
 https://macsbug.wordpress.com/2021/07/05/co2-monitor-with-m5stack-and-lvgl/
 https://macsbug.wordpress.com/2021/07/03/lvgl-with-m5stack-part-2/
+
+
+# Acknowledgments
+- [BlueMagic32](https://github.com/schoolpost/BlueMagic32) 
+- [BMPCC_Remote_Esp32](https://github.com/creacominc/BMPCC_Remote_Esp32)
+- [m5core2-lvgl8-SquarelineStudio-PlatformIO](https://github.com/OzInFl/m5core2-lvgl8-SquarelineStudio-PlatformIO)
