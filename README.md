@@ -52,6 +52,7 @@ Touch Icon -> waiting -> Select your WiFi -> keyboard
 
 
 
+## How to USE
 
 Modified to work with the Squareline Studio Beta 1.1.0 beta1 
 (although it may work with the current stable 1.0.5 (with lvgl8 export) as well)
