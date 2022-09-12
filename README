@@ -1,3 +1,58 @@
+# BMD Camera XR Adapter Plan
+
+## Hardware
+M5Stack Core2
+    - ESP32
+    - TFT 320*240
+    - MPU6886
+
+## Software
+    - Arduino
+    - freeRTOS
+
+## Tasks
+    - task1 for UI (LVGL)
+    - task2 for WiFi and BLE
+
+## UI Layout
+
+### init
+
+#### Scanning Camera
+Scan Button -> one of results connecting -> Input PinCode -> OK
+touch icon -> waiting -> Check the Camera for PIN -> keyboard -> Icon for next
+
+
+#### Connecting Wi-Fi
+Scan SSID -> Result List -> Input PWD -> OK
+Touch Icon -> waiting -> Select your WiFi -> keyboard
+
+#### Function Setup
+- timecode and NTP server
+- IMU
+- Lens Meta data
+- Camera Meta data
+- OSC Server and Port
+- Auto Focus
+- Metabones Switch
+
+#### Done
+
+### Summary
+- BMD Camera XR Adapter 
+- WiFi & BLE RSSI 
+- Device Name Or Model Name
+- IP Address and Port
+- delay (ping)
+- Focus Distance
+    - Depth of Field (BMPCC 6K or newer)
+    - Focus Point (Only BMPCC4K)
+- Camera-Subject Distance (via ToF sensor)
+- Focal Length of the Lens
+
+
+
+
 Modified to work with the Squareline Studio Beta 1.1.0 beta1 
 (although it may work with the current stable 1.0.5 (with lvgl8 export) as well)
 
