@@ -22,18 +22,27 @@ extern "C" {
 #include "lvgl.h"
 #endif
 
-extern lv_obj_t * ui_Screen1;
-void ui_event_Roller1(lv_event_t * e);
-extern lv_obj_t * ui_Roller1;
-extern lv_obj_t * ui_Roller2;
-extern lv_obj_t * ui_Roller3;
-extern lv_obj_t * ui_Roller4;
-extern lv_obj_t * ui_Roller5;
-extern lv_obj_t * ui_Roller6;
-extern lv_obj_t * ui_Button2;
-extern lv_obj_t * ui_Label1;
+void animationShowKB4WiFi_Animation(lv_obj_t * TargetObject, int delay);
+extern lv_obj_t * ui_Scanning_WiFi_and_BLE1;
+extern lv_obj_t * ui_CompatibilityNotes;
+void ui_event_WiFiPWD(lv_event_t * e);
+extern lv_obj_t * ui_WiFiPWD;
+void ui_event_WiFiSSID(lv_event_t * e);
+extern lv_obj_t * ui_WiFiSSID;
+extern lv_obj_t * ui_KB4WiFi;
+extern lv_obj_t * ui_ScanSpinner;
+extern lv_obj_t * ui_PageName;
+extern lv_obj_t * ui_Scanning_Camera;
+extern lv_obj_t * ui_CameraList;
+extern lv_obj_t * ui_BLEPINCODE;
+extern lv_obj_t * ui_KB4Camera;
+extern lv_obj_t * ui_Bar1;
+extern lv_obj_t * ui_Summary;
+extern lv_obj_t * ui_XR_Setup;
+extern lv_obj_t * ui_Auto_Focus;
+extern lv_obj_t * ui_About_me;
 
-void usr_lv_r1numchange(lv_event_t * e);
+void scanWiFiNow(lv_event_t * e);
 
 
 

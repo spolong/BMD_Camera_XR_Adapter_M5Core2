@@ -5,18 +5,28 @@
 
 #include "ui.h"
 #include "ui_helpers.h"
+#include "ui_comp.h"
 
 ///////////////////// VARIABLES ////////////////////
-lv_obj_t * ui_Screen1;
-void ui_event_Roller1(lv_event_t * e);
-lv_obj_t * ui_Roller1;
-lv_obj_t * ui_Roller2;
-lv_obj_t * ui_Roller3;
-lv_obj_t * ui_Roller4;
-lv_obj_t * ui_Roller5;
-lv_obj_t * ui_Roller6;
-lv_obj_t * ui_Button2;
-lv_obj_t * ui_Label1;
+void animationShowKB4WiFi_Animation(lv_obj_t * TargetObject, int delay);
+lv_obj_t * ui_Scanning_WiFi_and_BLE1;
+lv_obj_t * ui_CompatibilityNotes;
+void ui_event_WiFiPWD(lv_event_t * e);
+lv_obj_t * ui_WiFiPWD;
+void ui_event_WiFiSSID(lv_event_t * e);
+lv_obj_t * ui_WiFiSSID;
+lv_obj_t * ui_KB4WiFi;
+lv_obj_t * ui_ScanSpinner;
+lv_obj_t * ui_PageName;
+lv_obj_t * ui_Scanning_Camera;
+lv_obj_t * ui_CameraList;
+lv_obj_t * ui_BLEPINCODE;
+lv_obj_t * ui_KB4Camera;
+lv_obj_t * ui_Bar1;
+lv_obj_t * ui_Summary;
+lv_obj_t * ui_XR_Setup;
+lv_obj_t * ui_Auto_Focus;
+lv_obj_t * ui_About_me;
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
@@ -27,108 +37,195 @@ lv_obj_t * ui_Label1;
 #endif
 
 ///////////////////// ANIMATIONS ////////////////////
+void animationShowKB4WiFi_Animation(lv_obj_t * TargetObject, int delay)
+{
+    lv_anim_t PropertyAnimation_0;
+    lv_anim_init(&PropertyAnimation_0);
+    lv_anim_set_time(&PropertyAnimation_0, 1000);
+    lv_anim_set_user_data(&PropertyAnimation_0, TargetObject);
+    lv_anim_set_custom_exec_cb(&PropertyAnimation_0, _ui_anim_callback_set_y);
+    lv_anim_set_values(&PropertyAnimation_0, 180, 60);
+    lv_anim_set_path_cb(&PropertyAnimation_0, lv_anim_path_ease_out);
+    lv_anim_set_delay(&PropertyAnimation_0, delay + 0);
+    lv_anim_set_playback_time(&PropertyAnimation_0, 0);
+    lv_anim_set_playback_delay(&PropertyAnimation_0, 0);
+    lv_anim_set_repeat_count(&PropertyAnimation_0, 0);
+    lv_anim_set_repeat_delay(&PropertyAnimation_0, 0);
+    lv_anim_set_early_apply(&PropertyAnimation_0, false);
+    lv_anim_start(&PropertyAnimation_0);
+
+}
 
 ///////////////////// FUNCTIONS ////////////////////
-void ui_event_Roller1(lv_event_t * e)
+void ui_event_WiFiPWD(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-        usr_lv_r1numchange(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_flag_modify(ui_KB4WiFi, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        animationShowKB4WiFi_Animation(ui_KB4WiFi, 0);
+    }
+    if(event_code == LV_EVENT_DEFOCUSED) {
+        _ui_flag_modify(ui_KB4WiFi, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_basic_set_property(ui_KB4WiFi, _UI_BASIC_PROPERTY_POSITION_Y,  180);
+    }
+}
+void ui_event_WiFiSSID(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        scanWiFiNow(e);
     }
 }
 
 ///////////////////// SCREENS ////////////////////
-void ui_Screen1_screen_init(void)
+void ui_Scanning_WiFi_and_BLE1_screen_init(void)
 {
-    ui_Screen1 = lv_obj_create(NULL);
-    lv_obj_clear_flag(ui_Screen1, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_Scanning_WiFi_and_BLE1 = lv_obj_create(NULL);
+    lv_obj_clear_flag(ui_Scanning_WiFi_and_BLE1, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    static lv_style_t style;
-    lv_style_init(&style);
-    lv_style_set_bg_color(&style, lv_color_black());
-    lv_style_set_text_color(&style, lv_color_white());
-    lv_style_set_border_width(&style, 0);
-    lv_style_set_pad_all(&style, 0);
-    lv_obj_add_style(ui_Screen1, &style, 0);
+    ui_CompatibilityNotes = lv_label_create(ui_Scanning_WiFi_and_BLE1);
+    lv_obj_set_width(ui_CompatibilityNotes, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_CompatibilityNotes, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_CompatibilityNotes, -12);
+    lv_obj_set_y(ui_CompatibilityNotes, 21);
+    lv_obj_set_align(ui_CompatibilityNotes, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_CompatibilityNotes, "Only 2.4G Wi Fi is supported");
 
-    ui_Roller1 = lv_roller_create(ui_Screen1);
-    lv_roller_set_options(ui_Roller1, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9", LV_ROLLER_MODE_INFINITE);
-    lv_obj_set_width(ui_Roller1, 50);
-    lv_obj_set_height(ui_Roller1, 141);
-    lv_obj_set_x(ui_Roller1, -126);
-    lv_obj_set_y(ui_Roller1, 35);
-    lv_obj_set_align(ui_Roller1, LV_ALIGN_CENTER);
-    lv_obj_add_style(ui_Roller1,&style,0);
-    lv_obj_set_style_bg_opa(ui_Roller1,LV_OPA_TRANSP,LV_PART_SELECTED);
-    lv_roller_set_visible_row_count(ui_Roller1,3);
+    ui_WiFiPWD = lv_textarea_create(ui_Scanning_WiFi_and_BLE1);
+    lv_obj_set_width(ui_WiFiPWD, 256);
+    lv_obj_set_height(ui_WiFiPWD, LV_SIZE_CONTENT);    /// 70
+    lv_obj_set_x(ui_WiFiPWD, -7);
+    lv_obj_set_y(ui_WiFiPWD, -43);
+    lv_obj_set_align(ui_WiFiPWD, LV_ALIGN_CENTER);
+    lv_textarea_set_placeholder_text(ui_WiFiPWD, "Password");
+    lv_textarea_set_one_line(ui_WiFiPWD, true);
+    lv_textarea_set_password_mode(ui_WiFiPWD, true);
+    lv_obj_set_style_text_font(ui_WiFiPWD, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Roller2 = lv_roller_create(ui_Screen1);
-    lv_roller_set_options(ui_Roller2, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9", LV_ROLLER_MODE_INFINITE);
-    lv_obj_set_width(ui_Roller2, 50);
-    lv_obj_set_height(ui_Roller2, 141);
-    lv_obj_set_x(ui_Roller2, -76);
-    lv_obj_set_y(ui_Roller2, 35);
-    lv_obj_set_align(ui_Roller2, LV_ALIGN_CENTER);
+    ui_WiFiSSID = lv_dropdown_create(ui_Scanning_WiFi_and_BLE1);
+    lv_dropdown_set_options(ui_WiFiSSID, "Scanning...");
+    lv_dropdown_set_text(ui_WiFiSSID, "Wi-Fi SSID");
+    lv_obj_set_width(ui_WiFiSSID, 256);
+    lv_obj_set_height(ui_WiFiSSID, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_WiFiSSID, -8);
+    lv_obj_set_y(ui_WiFiSSID, -43);
+    lv_obj_set_align(ui_WiFiSSID, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_WiFiSSID, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_set_style_text_font(ui_WiFiSSID, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Roller3 = lv_roller_create(ui_Screen1);
-    lv_roller_set_options(ui_Roller3, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9", LV_ROLLER_MODE_INFINITE);
-    lv_obj_set_width(ui_Roller3, 50);
-    lv_obj_set_height(ui_Roller3, 141);
-    lv_obj_set_x(ui_Roller3, -26);
-    lv_obj_set_y(ui_Roller3, 35);
-    lv_obj_set_align(ui_Roller3, LV_ALIGN_CENTER);
+    ui_KB4WiFi = lv_keyboard_create(ui_Scanning_WiFi_and_BLE1);
+    lv_obj_set_width(ui_KB4WiFi, 320);
+    lv_obj_set_height(ui_KB4WiFi, 120);
+    lv_obj_set_x(ui_KB4WiFi, 0);
+    lv_obj_set_y(ui_KB4WiFi, 180);
+    lv_obj_set_align(ui_KB4WiFi, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_KB4WiFi, LV_OBJ_FLAG_HIDDEN);     /// Flags
 
-    ui_Roller4 = lv_roller_create(ui_Screen1);
-    lv_roller_set_options(ui_Roller4, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9", LV_ROLLER_MODE_INFINITE);
-    lv_obj_set_width(ui_Roller4, 50);
-    lv_obj_set_height(ui_Roller4, 141);
-    lv_obj_set_x(ui_Roller4, 24);
-    lv_obj_set_y(ui_Roller4, 35);
-    lv_obj_set_align(ui_Roller4, LV_ALIGN_CENTER);
+    ui_ScanSpinner = lv_spinner_create(ui_Scanning_WiFi_and_BLE1, 1000, 90);
+    lv_obj_set_width(ui_ScanSpinner, 80);
+    lv_obj_set_height(ui_ScanSpinner, 80);
+    lv_obj_set_align(ui_ScanSpinner, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_ScanSpinner, LV_OBJ_FLAG_HIDDEN);     /// Flags
+    lv_obj_clear_flag(ui_ScanSpinner, LV_OBJ_FLAG_CLICKABLE);      /// Flags
 
-    ui_Roller5 = lv_roller_create(ui_Screen1);
-    lv_roller_set_options(ui_Roller5, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9", LV_ROLLER_MODE_INFINITE);
-    lv_obj_set_width(ui_Roller5, 50);
-    lv_obj_set_height(ui_Roller5, 141);
-    lv_obj_set_x(ui_Roller5, 74);
-    lv_obj_set_y(ui_Roller5, 35);
-    lv_obj_set_align(ui_Roller5, LV_ALIGN_CENTER);
+    ui_PageName = lv_label_create(ui_Scanning_WiFi_and_BLE1);
+    lv_obj_set_width(ui_PageName, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_PageName, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_PageName, -51);
+    lv_obj_set_y(ui_PageName, -92);
+    lv_obj_set_align(ui_PageName, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_PageName, "Initializtion -- WiFi (2/4)");
+    lv_obj_set_style_text_font(ui_PageName, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Roller6 = lv_roller_create(ui_Screen1);
-    lv_roller_set_options(ui_Roller6, "0\n1\n2\n3\n4\n5\n6\n7\n8\n9", LV_ROLLER_MODE_INFINITE);
-    lv_obj_set_width(ui_Roller6, 50);
-    lv_obj_set_height(ui_Roller6, 141);
-    lv_obj_set_x(ui_Roller6, 124);
-    lv_obj_set_y(ui_Roller6, 35);
-    lv_obj_set_align(ui_Roller6, LV_ALIGN_CENTER);
+    lv_obj_add_event_cb(ui_WiFiPWD, ui_event_WiFiPWD, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_WiFiSSID, ui_event_WiFiSSID, LV_EVENT_ALL, NULL);
+    lv_keyboard_set_textarea(ui_KB4WiFi, ui_WiFiPWD);
 
-    ui_Button2 = lv_btn_create(ui_Screen1);
-    lv_obj_set_width(ui_Button2, 88);
-    lv_obj_set_height(ui_Button2, 35);
-    lv_obj_set_x(ui_Button2, 93);
-    lv_obj_set_y(ui_Button2, -78);
-    lv_obj_set_align(ui_Button2, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_Button2, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_clear_flag(ui_Button2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+}
+void ui_Scanning_Camera_screen_init(void)
+{
+    ui_Scanning_Camera = lv_obj_create(NULL);
+    lv_obj_clear_flag(ui_Scanning_Camera, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_Label1 = lv_label_create(ui_Screen1);
-    lv_obj_set_width(ui_Label1, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_Label1, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Label1, -119);
-    lv_obj_set_y(ui_Label1, -77);
-    lv_obj_set_align(ui_Label1, LV_ALIGN_CENTER);
+    ui_CameraList = lv_dropdown_create(ui_Scanning_Camera);
+    lv_dropdown_set_options(ui_CameraList, "");
+    lv_dropdown_set_text(ui_CameraList, "Camera List");
+    lv_obj_set_width(ui_CameraList, 256);
+    lv_obj_set_height(ui_CameraList, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_CameraList, -10);
+    lv_obj_set_y(ui_CameraList, -84);
+    lv_obj_set_align(ui_CameraList, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_CameraList, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
 
-    lv_obj_add_event_cb(ui_Roller1, ui_event_Roller1, LV_EVENT_ALL, NULL);
+    ui_BLEPINCODE = lv_textarea_create(ui_Scanning_Camera);
+    lv_obj_set_width(ui_BLEPINCODE, 94);
+    lv_obj_set_height(ui_BLEPINCODE, LV_SIZE_CONTENT);    /// 70
+    lv_obj_set_x(ui_BLEPINCODE, -90);
+    lv_obj_set_y(ui_BLEPINCODE, -34);
+    lv_obj_set_align(ui_BLEPINCODE, LV_ALIGN_CENTER);
+    lv_textarea_set_max_length(ui_BLEPINCODE, 6);
+    lv_textarea_set_placeholder_text(ui_BLEPINCODE, "PIN Code");
+    lv_textarea_set_one_line(ui_BLEPINCODE, true);
+
+    ui_KB4Camera = lv_keyboard_create(ui_Scanning_Camera);
+    lv_keyboard_set_mode(ui_KB4Camera, LV_KEYBOARD_MODE_NUMBER);
+    lv_obj_set_width(ui_KB4Camera, 317);
+    lv_obj_set_height(ui_KB4Camera, 120);
+    lv_obj_set_x(ui_KB4Camera, -1);
+    lv_obj_set_y(ui_KB4Camera, 57);
+    lv_obj_set_align(ui_KB4Camera, LV_ALIGN_CENTER);
+
+    ui_Bar1 = lv_bar_create(ui_Scanning_Camera);
+    lv_bar_set_value(ui_Bar1, 25, LV_ANIM_OFF);
+    lv_obj_set_width(ui_Bar1, 309);
+    lv_obj_set_height(ui_Bar1, 10);
+    lv_obj_set_x(ui_Bar1, -7);
+    lv_obj_set_y(ui_Bar1, -108);
+    lv_obj_set_align(ui_Bar1, LV_ALIGN_CENTER);
+
+    lv_keyboard_set_textarea(ui_KB4Camera, ui_BLEPINCODE);
+
+}
+void ui_Summary_screen_init(void)
+{
+    ui_Summary = lv_obj_create(NULL);
+    lv_obj_clear_flag(ui_Summary, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+}
+void ui_XR_Setup_screen_init(void)
+{
+    ui_XR_Setup = lv_obj_create(NULL);
+    lv_obj_clear_flag(ui_XR_Setup, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+}
+void ui_Auto_Focus_screen_init(void)
+{
+    ui_Auto_Focus = lv_obj_create(NULL);
+    lv_obj_clear_flag(ui_Auto_Focus, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+}
+void ui_About_me_screen_init(void)
+{
+    ui_About_me = lv_obj_create(NULL);
+    lv_obj_clear_flag(ui_About_me, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
 }
 
 void ui_init(void)
 {
+    LV_EVENT_GET_COMP_CHILD = lv_event_register_id();
+
     lv_disp_t * dispp = lv_disp_get_default();
     lv_theme_t * theme = lv_theme_default_init(dispp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
                                                false, LV_FONT_DEFAULT);
     lv_disp_set_theme(dispp, theme);
-    ui_Screen1_screen_init();
-    lv_disp_load_scr(ui_Screen1);
+    ui_Scanning_WiFi_and_BLE1_screen_init();
+    ui_Scanning_Camera_screen_init();
+    ui_Summary_screen_init();
+    ui_XR_Setup_screen_init();
+    ui_Auto_Focus_screen_init();
+    ui_About_me_screen_init();
+    lv_disp_load_scr(ui_Scanning_WiFi_and_BLE1);
 }

@@ -8,6 +8,7 @@
 3. auto reconnect WiFi, When WiFi.status() is True.
 4. need a button for start smartconfig
 5. auto reconnect WiFi, When WiFi disconnected.
+6. "ui_events.c" has to rename to "ui_events.cpp" . it needs include <WiFi.h> that is c++ head file.
 
 ### BLE model:
 1. review old library -- bleconnect
