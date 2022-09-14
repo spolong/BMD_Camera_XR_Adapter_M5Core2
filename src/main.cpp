@@ -7,6 +7,7 @@ void UI_Task(void * pvParam){
   {
     M5.update();
     lv_task_handler();
+    vTaskDelay(1); // have tp delay 1ms
   }
   
 }
@@ -14,7 +15,7 @@ void UI_Task(void * pvParam){
 void setup()
 {
   // create task for UI -> Core 1
-  xTaskCreatePinnedToCore(UI_Task,"UI Task",1024 * 32,NULL,1,NULL,1);
+  xTaskCreatePinnedToCore(UI_Task,"UI Task",1024 * 32,NULL,1,NULL,0);
   vTaskDelete(NULL);
 }
 

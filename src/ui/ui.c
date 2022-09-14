@@ -19,7 +19,6 @@ lv_obj_t * ui_symbolWiFi;
 void ui_event_ScanSwitch(lv_event_t * e);
 lv_obj_t * ui_ScanSwitch;
 lv_obj_t * ui_scanSwitchLabel;
-void ui_event_ScanSpinner(lv_event_t * e);
 lv_obj_t * ui_ScanSpinner;
 lv_obj_t * ui_Scanning_Camera;
 lv_obj_t * ui_CameraList;
@@ -71,6 +70,11 @@ void ui_event_WiFiPWD(lv_event_t * e)
         _ui_flag_modify(ui_KB4WiFi, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_basic_set_property(ui_KB4WiFi, _UI_BASIC_PROPERTY_POSITION_Y,  180);
     }
+    if(event_code == LV_EVENT_READY) {
+        _ui_flag_modify(ui_KB4WiFi, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_basic_set_property(ui_KB4WiFi, _UI_BASIC_PROPERTY_POSITION_Y,  180);
+        connect_WiFi_init(e);
+    }
 }
 void ui_event_ScanSwitch(lv_event_t * e)
 {
@@ -80,16 +84,7 @@ void ui_event_ScanSwitch(lv_event_t * e)
         _ui_flag_modify(ui_ScanSpinner, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_symbolWiFi, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_state_modify(ui_ScanSwitch, LV_STATE_DISABLED, _UI_MODIFY_STATE_ADD);
-        _ui_state_modify(ui_ScanSpinner, LV_STATE_FOCUSED, _UI_MODIFY_STATE_ADD);
         scanWiFiNow(e);
-    }
-}
-void ui_event_ScanSpinner(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_FOCUSED) {
-        // scanWiFiNow(e);
     }
 }
 
@@ -110,14 +105,14 @@ void ui_Scanning_WiFi_screen_init(void)
     ui_WiFiPWD = lv_textarea_create(ui_Scanning_WiFi);
     lv_obj_set_width(ui_WiFiPWD, 256);
     lv_obj_set_height(ui_WiFiPWD, LV_SIZE_CONTENT);    /// 70
-    lv_obj_set_x(ui_WiFiPWD, -7);
-    lv_obj_set_y(ui_WiFiPWD, -43);
+    lv_obj_set_x(ui_WiFiPWD, 0);
+    lv_obj_set_y(ui_WiFiPWD, -40);
     lv_obj_set_align(ui_WiFiPWD, LV_ALIGN_CENTER);
     lv_textarea_set_placeholder_text(ui_WiFiPWD, "Password");
     lv_textarea_set_one_line(ui_WiFiPWD, true);
-    lv_textarea_set_password_mode(ui_WiFiPWD, true);
+    // lv_textarea_set_password_mode(ui_WiFiPWD, true)
     lv_obj_add_flag(ui_WiFiPWD, LV_OBJ_FLAG_HIDDEN);     /// Flags
-    lv_obj_set_style_text_font(ui_WiFiPWD, &lv_font_montserrat_16, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(ui_WiFiPWD, &lv_font_montserrat_20, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_KB4WiFi = lv_keyboard_create(ui_Scanning_WiFi);
     lv_obj_set_width(ui_KB4WiFi, 320);
@@ -146,19 +141,20 @@ void ui_Scanning_WiFi_screen_init(void)
     lv_obj_set_style_text_font(ui_symbolWiFi, &lv_font_montserrat_40, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ScanSwitch = lv_switch_create(ui_Scanning_WiFi);
-    lv_obj_set_width(ui_ScanSwitch, 50);
-    lv_obj_set_height(ui_ScanSwitch, 25);
-    lv_obj_set_x(ui_ScanSwitch, 41);
-    lv_obj_set_y(ui_ScanSwitch, 56);
+    lv_obj_set_width(ui_ScanSwitch, 80);
+    lv_obj_set_height(ui_ScanSwitch, 30);
+    lv_obj_set_x(ui_ScanSwitch, 0);
+    lv_obj_set_y(ui_ScanSwitch, 64);
     lv_obj_set_align(ui_ScanSwitch, LV_ALIGN_CENTER);
 
     ui_scanSwitchLabel = lv_label_create(ui_Scanning_WiFi);
     lv_obj_set_width(ui_scanSwitchLabel, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_scanSwitchLabel, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_scanSwitchLabel, -30);
-    lv_obj_set_y(ui_scanSwitchLabel, 56);
+    lv_obj_set_x(ui_scanSwitchLabel, 0);
+    lv_obj_set_y(ui_scanSwitchLabel, 34);
     lv_obj_set_align(ui_scanSwitchLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_scanSwitchLabel, "Scan Now");
+    lv_obj_set_style_text_font(ui_scanSwitchLabel, &lv_font_montserrat_14, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ScanSpinner = lv_spinner_create(ui_Scanning_WiFi, 1000, 90);
     lv_obj_set_width(ui_ScanSpinner, 80);
@@ -172,7 +168,6 @@ void ui_Scanning_WiFi_screen_init(void)
     lv_obj_add_event_cb(ui_WiFiPWD, ui_event_WiFiPWD, LV_EVENT_ALL, NULL);
     lv_keyboard_set_textarea(ui_KB4WiFi, ui_WiFiPWD);
     lv_obj_add_event_cb(ui_ScanSwitch, ui_event_ScanSwitch, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_ScanSpinner, ui_event_ScanSpinner, LV_EVENT_ALL, NULL);
 
 }
 void ui_Scanning_Camera_screen_init(void)
