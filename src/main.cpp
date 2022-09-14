@@ -90,5 +90,5 @@ void loop()
 {
   M5.update();
   lv_task_handler();
-  
+  delay(5);
 }

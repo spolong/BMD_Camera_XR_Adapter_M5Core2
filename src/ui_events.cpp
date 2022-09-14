@@ -9,11 +9,14 @@
 
 void scanWiFiNow(lv_event_t * e)
 {
+        //     lv_ui_flag_modify(ui_ScanSpinner, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        // _ui_flag_modify(ui_symbolWiFi, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        // _ui_state_modify(ui_ScanSwitch, LV_STATE_DISABLED, _UI_MODIFY_STATE_ADD);
     WiFi.mode(WIFI_STA);
     WiFi.disconnect();
     Serial.println("Setup done");
         Serial.println("scan start");
-
+    lv_obj_clear_flag(ui_ScanSpinner,LV_OBJ_FLAG_HIDDEN);
     // WiFi.scanNetworks will return the number of networks found
     int n = WiFi.scanNetworks();
     Serial.println("scan done");
