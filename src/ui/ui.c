@@ -80,16 +80,16 @@ void ui_event_ScanSwitch(lv_event_t * e)
         _ui_flag_modify(ui_ScanSpinner, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_flag_modify(ui_symbolWiFi, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
         _ui_state_modify(ui_ScanSwitch, LV_STATE_DISABLED, _UI_MODIFY_STATE_ADD);
-        lv_event_send(ui_Scanning_WiFi,LV_EVENT_REFRESH,NULL);
-        lv_timer_create(scanWiFiNow,100,0);
+        _ui_state_modify(ui_ScanSpinner, LV_STATE_FOCUSED, _UI_MODIFY_STATE_ADD);
+        scanWiFiNow(e);
     }
 }
 void ui_event_ScanSpinner(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_VALUE_CHANGED) {
-            // scanWiFiNow(e);
+    if(event_code == LV_EVENT_FOCUSED) {
+        // scanWiFiNow(e);
     }
 }
 
@@ -171,8 +171,8 @@ void ui_Scanning_WiFi_screen_init(void)
 
     lv_obj_add_event_cb(ui_WiFiPWD, ui_event_WiFiPWD, LV_EVENT_ALL, NULL);
     lv_keyboard_set_textarea(ui_KB4WiFi, ui_WiFiPWD);
-    lv_obj_add_event_cb(ui_ScanSwitch, ui_event_ScanSwitch, LV_EVENT_VALUE_CHANGED, NULL);
-    lv_obj_add_event_cb(ui_ScanSpinner, ui_event_ScanSpinner, LV_EVENT_VALUE_CHANGED, NULL);
+    lv_obj_add_event_cb(ui_ScanSwitch, ui_event_ScanSwitch, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_ScanSpinner, ui_event_ScanSpinner, LV_EVENT_ALL, NULL);
 
 }
 void ui_Scanning_Camera_screen_init(void)
